@@ -7,18 +7,7 @@
  * @returns {Promise}
  */
 function mapPromise(promise, transformer){
-  return new Promise((resolve, reject) => {
-    /* IMPLEMENT ME!! */
-    promise.then(r => {
-      return transformer(r);
-    }).catch(e => {
-      throw e;
-    }).then(value => {
-      resolve(value);
-    }).catch(err => {
-      reject(err);
-    });
-  });
+  return promise.then(transformer);
 }
 
 /**
@@ -31,24 +20,17 @@ function mapPromise(promise, transformer){
 function squarePromise(numberPromise){
   return numberPromise
     .then(r => {
-      return new Promise((resolve, reject) => {
-        if (typeof r === 'number') {
-          resolve (r * r);
+      if (typeof r === 'number') {
+        return (r * r);
+      }
+      if (typeof r === 'string') {
+        const parsed = Number.parseInt(r, 10);
+        if (Number.isNaN(parsed)) {
+          throw 'Cannot convert \'' + r + '\' to a number!';
+        } else {
+          return (parsed * parsed);
         }
-        if (typeof r === 'string') {
-          const parsed = Number.parseInt(r, 10);
-          if (Number.isNaN(parsed)) {
-            reject('Cannot convert \'' + r + '\' to a number!');
-          } else {
-            resolve (parsed * parsed);
-          }
-        }
-      });
-    })
-    .catch(e => {
-      return new Promise((resolve, reject) => {
-        reject(e);
-      });
+      }
     });
 }
 
@@ -59,12 +41,7 @@ function squarePromise(numberPromise){
  * @returns {Promise<number>}
  */
 function squarePromiseOrZero(promise) {
-  return squarePromise(promise)
-    .catch(e => {
-      return new Promise((resolve, reject) => {
-        resolve(0);
-      });
-    });
+  return squarePromise(promise).catch(() => {return 0;});
 }
 
 /**
@@ -76,14 +53,10 @@ function squarePromiseOrZero(promise) {
 function switcheroo(promise) {
   return promise
     .then( value => {
-      return new Promise((resolve, reject) => {
-        reject(value);
-      });
+      throw value; 
     },
     err => {
-      return new Promise((resolve, reject) => {
-        resolve(err);
-      });
+      return err;
     });
 }
 

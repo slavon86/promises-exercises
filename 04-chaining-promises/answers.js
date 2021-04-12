@@ -5,11 +5,8 @@
  * @param {Promise} promise 
  * @param {function} asyncTransformer 
  */
-function flatMapPromise(promise, asyncTransformer){
-  return new Promise((resolve, reject) => {
-    promise
-      .then(asyncTransformer).then(resolve).catch(reject);
-  });
+function flatMapPromise(promise, asyncTransformer) {
+  return promise.then(asyncTransformer);
 }
 
 /**
