@@ -27,6 +27,6 @@
   "homepage": "https://github.com/lighthouse-labs/promises-exercises#readme",
   "dependencies": {
     "eslint": "^5.1.0",
-    "mocha": "^5.2.0"
+    "mocha": "^8.3.2"
   }
 }
