@@ -27,20 +27,19 @@ function chainTwoAsyncProcesses(firstPromise, slowAsyncProcess){
  * @param {function} getUserById 
  * @param {function} getOrganizationById 
  */
-function makeGetUserByIdWithOrganization(getUserById, getOrganizationById){
-  return function getUserByIdWithOrganization(userId){
+function makeGetUserByIdWithOrganization(getUserById, getOrganizationById) {
+  return function getUserByIdWithOrganization(userId) {
     /* IMPLEMENT ME! */
-    return  getUserById(userId).then(userObject =>
-      /*if (Object.is(userObject, undefined)) {
-        throw 'User object undefined!';
-      }*/
-      getOrganizationById(userObject.organizationId)
-        .catch()
+    return  getUserById(userId).then(userObject => {
+      if (typeof userObject === 'undefined') {
+        return undefined;          
+      }
+      return getOrganizationById(userObject.organizationId)
         .then(organisationObject => {
           userObject.organization = organisationObject;
           return userObject;
-        })
-    );
+        }); 
+    });
   };
 }
 
